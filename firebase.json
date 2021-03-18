@@ -9,7 +9,7 @@
     ],
     "redirects": [ {
       "source": "/off",
-      "destination": "/wip.html",
+      "destination": "/maintenance/wip.html",
       "type": 302
       } ]
   }
