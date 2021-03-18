@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Sample FirebaseUI App</title>
+
+    <!-- <script src="js/app.js" charset="utf-8"></script> -->
+
+    <script src="/__/firebase/8.3.0/firebase-app.js"></script>
+    <script src="/__/firebase/8.3.0/firebase-auth.js"></script>
+    <script src="/__/firebase/8.3.0/firebase-analytics.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+
+
+    <script type="text/javascript">
+      initApp = function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var uid = user.uid;
+            var phoneNumber = user.phoneNumber;
+            var providerData = user.providerData;
+            user.getIdToken().then(function(accessToken) {
+              document.getElementById('sign-in-status').textContent = 'Signed in';
+              document.getElementById('sign-in').textContent = 'Sign out';
+              // document.getElementById('sign-in').onclick = firebase.auth().signOut();
+              document.getElementById('account-details').textContent = JSON.stringify({
+                displayName: displayName,
+                email: email,
+                emailVerified: emailVerified,
+                phoneNumber: phoneNumber,
+                photoURL: photoURL,
+                uid: uid,
+                accessToken: accessToken,
+                providerData: providerData
+              }, null, '  ');
+            });
+          } else {
+            // User is signed out.
+            document.getElementById('sign-in-status').textContent = 'Signed out';
+            document.getElementById('sign-in').textContent = 'Sign in';
+            document.getElementById('account-details').textContent = 'null';
+          }
+        }, function(error) {
+          console.log(error);
+        });
+      };
+
+      window.addEventListener('load', function() {
+        initApp()
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Test App</h1>
+    <div id="sign-in-status"></div>
+    <button type="button" id="sign-in"></button>
+    <pre id="account-details"></pre>
+    <hr>
+    <button id="login-btn">Login</button>
+    <button id="logout-btn">Logout</button>
+
+    <script type="text/javascript">
+      const logoutBtn = document.querySelector('#logout-btn');
+      logoutBtn.addEventListener('click', e => {
+        e.preventDefault();
+        firebase.auth().signOut();
+        console.log('User signed out!');
+      })
+    </script>
+  </body>
+</html>
